@@ -3,6 +3,7 @@ package main
 import (
 	"bufio"
 	"bytes"
+	"fmt"
 	"io"
 	"os"
 	"time"
@@ -16,9 +17,12 @@ func main() {
 			w.TimeFormat = time.TimeOnly
 		},
 	)
+
 	scanner := bufio.NewScanner(os.Stdin)
 	for scanner.Scan() {
 		reader := bytes.NewReader(scanner.Bytes())
-		_, _ = io.Copy(writer, reader)
+		if _, err := io.Copy(writer, reader); err != nil {
+			fmt.Println(scanner.Text())
+		}
 	}
 }
