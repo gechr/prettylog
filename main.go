@@ -14,6 +14,7 @@ import (
 func main() {
 	writer := zerolog.NewConsoleWriter(
 		func(w *zerolog.ConsoleWriter) {
+			w.FormatLevel = formatLevel(w.NoColor)
 			w.PartsExclude = []string{zerolog.CallerFieldName}
 			w.TimeFormat = time.TimeOnly
 		},
