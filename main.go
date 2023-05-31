@@ -6,7 +6,6 @@ import (
 	"fmt"
 	"io"
 	"os"
-	"time"
 
 	"github.com/rs/zerolog"
 )
@@ -16,7 +15,7 @@ func main() {
 		func(w *zerolog.ConsoleWriter) {
 			w.FormatLevel = formatLevel(w.NoColor)
 			w.PartsExclude = []string{zerolog.CallerFieldName}
-			w.TimeFormat = time.TimeOnly
+			w.TimeFormat = "15:04:05.000"
 		},
 	)
 
