@@ -11,7 +11,7 @@ import (
 )
 
 func main() {
-	writer := zerolog.NewConsoleWriter(
+	w := zerolog.NewConsoleWriter(
 		func(w *zerolog.ConsoleWriter) {
 			w.FormatLevel = formatLevel(w.NoColor)
 			w.PartsExclude = []string{zerolog.CallerFieldName}
@@ -19,11 +19,19 @@ func main() {
 		},
 	)
 
-	scanner := bufio.NewScanner(os.Stdin)
-	for scanner.Scan() {
-		reader := bytes.NewReader(scanner.Bytes())
-		if _, err := io.Copy(writer, reader); err != nil {
-			fmt.Println(scanner.Text())
+	br := bufio.NewReader(os.Stdin)
+	for {
+		line, err := br.ReadBytes('\n')
+		if err != nil && err != io.EOF {
+			fmt.Println(err)
+			break
+		}
+		if err == io.EOF {
+			break
+		}
+		r := bytes.NewReader(line)
+		if _, err := io.Copy(w, r); err != nil {
+			fmt.Println(string(line))
 		}
 	}
 }
