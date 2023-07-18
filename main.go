@@ -31,7 +31,7 @@ func main() {
 		}
 		r := bytes.NewReader(line)
 		if _, err := io.Copy(w, r); err != nil {
-			fmt.Println(string(line))
+			fmt.Printf("%s", line)
 		}
 	}
 }
