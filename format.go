@@ -3,7 +3,6 @@ package main
 
 import (
 	"fmt"
-	"strings"
 
 	"github.com/rs/zerolog"
 )
@@ -41,7 +40,7 @@ func formatLevel(noColor bool) zerolog.Formatter {
 				l = colorize("DBG", styleNormal, colorBlue, noColor)
 			case zerolog.LevelInfoValue:
 				l = colorize("INF", styleNormal, colorGreen, noColor)
-			case zerolog.LevelWarnValue:
+			case zerolog.LevelWarnValue, "warning":
 				l = colorize("WRN", styleNormal, colorYellow, noColor)
 			case zerolog.LevelErrorValue:
 				l = colorize("ERR", styleNormal, colorRed, noColor)
@@ -51,12 +50,6 @@ func formatLevel(noColor bool) zerolog.Formatter {
 				l = colorize("PNC", styleNormal, colorRed, noColor)
 			default:
 				l = colorize(ll, styleBold, colorWhite, noColor)
-			}
-		} else {
-			if i == nil {
-				l = colorize("???", styleBold, colorWhite, noColor)
-			} else {
-				l = strings.ToUpper(fmt.Sprintf("%s", i))[0:3]
 			}
 		}
 		return l
