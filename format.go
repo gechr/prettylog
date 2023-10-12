@@ -45,9 +45,9 @@ func formatLevel(noColor bool) zerolog.Formatter {
 			case zerolog.LevelErrorValue:
 				l = colorize("ERR", styleNormal, colorRed, noColor)
 			case zerolog.LevelFatalValue:
-				l = colorize("FTL", styleNormal, colorRed, noColor)
+				l = colorize("FTL", styleBold, colorRed, noColor)
 			case zerolog.LevelPanicValue:
-				l = colorize("PNC", styleNormal, colorRed, noColor)
+				l = colorize("PNC", styleBold, colorRed, noColor)
 			default:
 				l = colorize(ll, styleBold, colorWhite, noColor)
 			}
