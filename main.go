@@ -3,12 +3,17 @@ package main
 import (
 	"bufio"
 	"bytes"
+	"errors"
 	"fmt"
-	"io"
+	"log"
 	"os"
 
 	"github.com/rs/zerolog"
 )
+
+func init() {
+	log.SetFlags(0)
+}
 
 func main() {
 	w := zerolog.NewConsoleWriter(
@@ -19,19 +24,25 @@ func main() {
 		},
 	)
 
-	br := bufio.NewReader(os.Stdin)
-	for {
-		line, err := br.ReadBytes('\n')
-		if err != nil && err != io.EOF {
-			fmt.Println(err)
-			break
-		}
-		if err == io.EOF {
-			break
-		}
-		r := bytes.NewReader(line)
-		if _, err := io.Copy(w, r); err != nil {
-			fmt.Printf("%s", line)
+	var query string
+	switch len(os.Args[1:]) {
+	case 0:
+		break
+	case 1:
+		query = os.Args[1]
+	default:
+		log.Fatalln("usage: prettylog [query]")
+	}
+
+	s := bufio.NewScanner(os.Stdin)
+	for s.Scan() {
+		r := bytes.NewReader(s.Bytes())
+		if err := jq(r, w, query); err != nil {
+			if errors.Is(err, errInvalidJSON) {
+				fmt.Println(s.Text())
+			} else {
+				log.Fatalln(err)
+			}
 		}
 	}
 }
